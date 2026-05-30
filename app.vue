@@ -6,7 +6,7 @@
     <main>
       <NuxtPage />
     </main>
-    <!-- <AppFooter /> -->
+    <AppFooter />
   </div>
 </template>
 
