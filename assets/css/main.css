@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+@theme {
+  /* FIT2PRO Elite Color Palette */
+  --color-pro-black: #090a0f;       /* Deepest stealth background */
+  --color-pro-dark-gray: #12141c;  /* Card & container backgrounds */
+  --color-pro-mid-gray: #252936;   /* Borders, dividers, subtle accents */
+  
+  --color-pro-purple: #6d28d9;     /* Deep Royal Purple primary */
+  --color-pro-purple-light: #a855f7;/* Vibrant Purple for highlights */
+  
+  --color-pro-gold: #f59e0b;       /* Pure Gold accent */
+  --color-pro-gold-dark: #d97706;  /* Chiseled Metallic shadow Gold */
+
+  /* FIT2PRO Typography Standards */
+  --font-display: "Oswald", sans-serif;
+  --font-sans: "Plus Jakarta Sans", sans-serif;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-pro-black);
+    color: #f3f4f6;
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+}
+
+/* Custom Premium Utilities */
+@layer utilities {
+  /* Logo-accurate Gold Gradient */
+  .text-gradient-gold {
+    background: linear-gradient(135deg, #FFE259 0%, var(--color-pro-gold) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Deep Royal Purple Gradient */
+  .text-gradient-purple {
+    background: linear-gradient(135deg, var(--color-pro-purple-light) 0%, var(--color-pro-purple) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-gray {
+    background: linear-gradient(180deg, #4b5563 0%, #111827 80%, #030712 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    /* Adds a subtle crisp edge so it breaks away from dark backgrounds */
+    filter: drop-shadow(0px 1px 1px rgba(255, 255, 255, 0.15));
+  }
+
+  .logo-number-two {
+    position: relative;
+    display: inline-block;
+    background: linear-gradient(180deg, #4b5563 0%, #111827 80%, #030712 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    z-index: 1;
+  }
+
+  /* Pseudo-element that acts as the heavy gold background border outline */
+  .logo-number-two::after {
+    content: "2";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* Use your theme's gold color */
+    -webkit-text-stroke: .17px var(--color-pro-gold);
+    -webkit-text-fill-color: transparent;
+    z-index: -1;
+    /* Keeps alignment perfectly centered */
+    background: none;
+    -webkit-background-clip: initial;
+  }
+
+  /* Hard Metallic Border/Card Effect */
+  .premium-card {
+    background: linear-gradient(145deg, #161922 0%, var(--color-pro-black) 100%);
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+  }
+
+  .premium-card:hover {
+    border-color: rgba(245, 158, 11, 0.4);
+    box-shadow: 0 10px 30px -10px rgba(168, 85, 247, 0.2);
+  }
+
+  /* Glow effects for buttons/badges */
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+  }
+  
+  .glow-gold {
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.3);
+  }
+}
+
+/* Custom Scrollbar for a premium dark app feel */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-pro-black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-pro-mid-gray);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-pro-purple);
+}
