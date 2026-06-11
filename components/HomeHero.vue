@@ -24,10 +24,10 @@
 
         <!-- Main Title with Split Color / Gold Gradient -->
         <h1 class="text-5xl sm:text-6xl xl:text-7xl font-display font-bold tracking-tight text-white leading-none">
-          TRAIN LIKE A <br />
-          <span class="text-gradient-gold">PRO</span>. 
-          EXECUTE LIKE <br class="hidden sm:inline" />
-          A <span class="text-gradient-purple">CHAMPION</span>.
+          TRAIN TO BE <br />
+          <span class=" text-gradient-purple">FIT</span>. 
+          EXECUTE LIKE A<br class="hidden sm:inline" />
+          A <span class="text-gradient-gold">PRO</span>.
         </h1>
 
         <!-- Subtitle describing his premium vision -->

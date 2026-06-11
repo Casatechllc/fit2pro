@@ -12,22 +12,22 @@
           
           <!-- Cyberpunk/Chiseled Outer Frames -->
           <div class="absolute inset-0 border-2 border-pro-mid-gray rounded-3xl transform -rotate-2 scale-98 group-hover:rotate-0 transition-transform duration-500"></div>
-          <div class="absolute inset-0 border border-pro-gold/30 rounded-3xl transform rotate-3 scale-100 group-hover:rotate-0 transition-transform duration-500"></div>
+          <div class="absolute inset-0 border border-pro-gold/60 rounded-3xl transform rotate-3 scale-100 group-hover:rotate-0 transition-transform duration-500"></div>
 
           <!-- Main Image Container -->
           <div class="absolute inset-0 bg-pro-dark-gray rounded-3xl overflow-hidden border border-pro-mid-gray/60 shadow-2xl">
             
             <!-- LAYER 1: The Base Image (z-10) -->
             <NuxtImg 
-              src="/images/mike-image2.png" 
+              src="/images/mike-image3.jpg" 
               alt="Michael Billups - FIT2PRO Elite Trainer"
-              class="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.1] brightness-[0.6] transition-transform duration-700 group-hover:scale-105 z-10"
+              class="absolute inset-0 w-full h-full object-cover object-center filter contrast-[1.1] brightness-[1.2] transition-transform duration-700 group-hover:scale-105 z-10"
               loading="lazy"
             />
             
             <!-- LAYER 2: Premium Gradient Filter Overlay (z-20) -->
             <!-- Transitions from solid black to translucent royal purple using multiply blend -->
-            <div class="absolute inset-0 bg-gradient-to-tr from-pro-black via-pro-black/60 to-pro-purple/40 mix-blend-multiply z-20 pointer-events-none"></div>
+            <div class="absolute inset-0 bg-gradient-to-tr from-pro-black via-pro-black/30 to-pro-purple/90 mix-blend-multiply z-20 pointer-events-none"></div>
             
             <!-- LAYER 3: Dark Stacking Base Shadow for Typography Safety (z-20) -->
             <div class="absolute inset-0 bg-gradient-to-t from-pro-black via-transparent to-transparent opacity-95 z-20 pointer-events-none"></div>
