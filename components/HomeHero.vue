@@ -7,7 +7,7 @@
     <!-- Dynamic Purple Ambient Light Glow -->
     <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-pro-purple/10 blur-[120px] rounded-full pointer-events-none z-0"></div>
 
-    <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+    <div class="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 items-center relative z-10">
       
       <!-- LEFT COLUMN: Brand Copy & CTAs -->
       <div 
@@ -25,7 +25,7 @@
         <!-- Main Title with Split Color / Gold Gradient -->
         <h1 class="text-5xl sm:text-6xl xl:text-7xl font-display font-bold tracking-tight text-white leading-none">
           TRAIN TO BE <br />
-          <span class=" text-gradient-purple">FIT</span>. 
+          <span class="text-gradient-purple">FIT</span>. 
           EXECUTE LIKE<br class="hidden sm:inline" />
           A <span class="text-gradient-gold">PRO</span>.
         </h1>
@@ -53,7 +53,7 @@
         </div>
 
         <!-- Social Proof Grid / Quick Stats -->
-        <div class="grid grid-cols-3 gap-4 pt-8 border-t border-pro-dark-gray max-w-md mx-auto lg:mx-0">
+        <div class="grid grid-cols-3 gap-4 pt-4 border-t border-pro-dark-gray max-w-md mx-auto lg:mx-0">
           <div>
             <p class="font-display text-2xl sm:text-3xl font-bold text-white">100%</p>
             <p class="text-xs text-gray-500 uppercase tracking-wider">Custom Built</p>
@@ -69,13 +69,16 @@
         </div>
       </div>
 
-      <!-- RIGHT COLUMN: The Trainer Feature Visual -->
+      <!-- RIGHT COLUMN: Visual Column Shell holding both your custom Typo Component and Image Card Frame -->
       <div 
-        class="lg:col-span-5 relative flex justify-center"
+        class="lg:col-span-5 flex flex-col items-center gap-8 relative"
         v-motion
         :initial="{ opacity: 0, y: 50 }"
         :enter="{ opacity: 1, y: 0, transition: { duration: 1000, delay: 200, ease: 'easeOut' } }"
       >
+        <!-- HomeBrandTypo component instance placed directly above image container -->
+        <HomeBrandTypo />
+
         <!-- Interactive Glowing Frame Container -->
         <div class="relative w-72 h-72 sm:w-96 sm:h-96 lg:w-full lg:h-[450px] max-w-md group">
           
@@ -110,8 +113,8 @@
               </span>
             </div>
           </div>
-
         </div>
+
       </div>
 
     </div>
@@ -119,5 +122,5 @@
 </template>
 
 <script setup>
-// Props or local logical values can easily handle dynamic state if expanded later.
+// Main view structure mapping layer
 </script>
