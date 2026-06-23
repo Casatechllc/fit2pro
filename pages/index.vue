@@ -1,5 +1,6 @@
 <template>
     <HomeHero />
+    <HomeSchedule />
     <HomeWhatWeOffer />
     <HomeAbout />
     <HomeTestimonials />

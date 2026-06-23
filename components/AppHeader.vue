@@ -107,6 +107,6 @@ const navigationPages = ref([
   { name: 'Home', path: '/' },
   { name: 'Social Hub', path: '/social-hub' },
   { name: 'Programs', path: '/programs' },
-//   { name: 'Nutrition', path: '/nutrition' }
+  { name: 'About', path: '/about' }
 ])
 </script>

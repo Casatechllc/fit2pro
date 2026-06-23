@@ -6,9 +6,14 @@
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
         <div class="lg:col-span-4 premium-card rounded-3xl p-4 border border-pro-mid-gray/40 bg-pro-dark-gray/20 flex flex-col justify-center relative overflow-hidden min-h-[580px]">
-          <span class="w-full flex items-center gap-2 text-[10px] font-display font-black uppercase tracking-widest text-pro-gold mb-3 px-2">
-            <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-            Live High-Performance Feed
+          <span class="w-full flex items-center justify-between text-[10px] font-display font-black uppercase tracking-widest text-pro-gold mb-3 px-2">
+            <span class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+              Live Intel Stream
+            </span>
+            <span v-if="videos.length > 0" class="text-gray-500">
+              LOG {{ currentVideoIndex + 1 }} / {{ videos.length }}
+            </span>
           </span>
           
           <div v-if="pending" class="w-full aspect-[9/16] rounded-2xl bg-pro-black/40 border border-pro-mid-gray/20 flex flex-col items-center justify-center text-gray-500 text-xs gap-3">
@@ -33,19 +38,83 @@
             </div>
           </div>
 
-          <div v-else class="w-full aspect-[9/16] overflow-hidden rounded-2xl bg-black border border-pro-mid-gray/40 flex justify-center shadow-2xl relative group">
-            <video
-              :src="videoStreamUrl"
-              class="w-full h-full object-cover filter brightness-[0.9] contrast-[1.05]"
-              controls
-              playsinline
-              preload="metadata"
-            ></video>
+          <div v-else class="w-full flex flex-col gap-4">
+            <div 
+              ref="swipeTarget" 
+              class="w-full aspect-[9/16] overflow-hidden rounded-2xl bg-black border border-pro-mid-gray/40 flex justify-center shadow-2xl relative group touch-pan-y"
+            >
+              <video
+                ref="videoPlayer"
+                :key="videoStreamUrl"
+                :src="videoStreamUrl"
+                class="w-full h-full object-cover filter brightness-[0.9] contrast-[1.05]"
+                controls
+                playsinline
+                preload="auto"
+              ></video>
+            </div>
+
+            <div class="flex items-center justify-between px-2">
+              <button 
+                @click="prevVideo" 
+                :disabled="currentVideoIndex === 0"
+                class="w-10 h-10 rounded-xl border border-pro-mid-gray/40 bg-pro-dark-gray/40 text-white flex items-center justify-center hover:bg-pro-purple/20 hover:border-pro-purple-light/40 active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none group"
+                aria-label="Previous newer video"
+              >
+                <i class="fa-solid fa-arrow-left text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
+              </button>
+
+              <span class="text-[10px] font-display font-bold text-gray-400 tracking-widest uppercase select-none">
+                Swipe or Browse
+              </span>
+
+              <button 
+                @click="nextVideo" 
+                :disabled="currentVideoIndex === videos.length - 1"
+                class="w-10 h-10 rounded-xl border border-pro-mid-gray/40 bg-pro-dark-gray/40 text-white flex items-center justify-center hover:bg-pro-purple/20 hover:border-pro-purple-light/40 active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none group"
+                aria-label="Next older video"
+              >
+                <i class="fa-solid fa-arrow-right text-xs transform group-hover:translate-x-0.5 transition-transform"></i>
+              </button>
+            </div>
           </div>
         </div>
 
         <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 self-stretch h-full">
           
+          <div class="premium-card rounded-3xl p-6 sm:p-8 border border-pro-mid-gray/40 flex flex-col justify-between group min-h-[270px] relative overflow-hidden bg-gradient-to-br from-pro-dark-gray via-pro-black to-pro-black">
+            <div class="absolute -top-6 -right-6 text-pro-mid-gray/5 text-8xl pointer-events-none font-black">
+              <i class="fa-brands fa-instagram"></i>
+            </div>
+
+            <div class="space-y-3 relative z-10">
+              <div class="flex items-center justify-between">
+                <span class="inline-flex items-center gap-1.5 text-[10px] font-display font-black uppercase tracking-widest text-white px-2.5 py-1 rounded-lg bg-gradient-to-r from-[#f09433] via-[#e6683c] to-[#cc2366] shadow-sm">
+                  <i class="fa-brands fa-instagram text-xs"></i>
+                  Instagram Feed
+                </span>
+                <span class="text-[9px] font-mono text-gray-500 uppercase tracking-wider">@fit2pro</span>
+              </div>
+              
+              <h4 class="text-base font-display font-black text-white uppercase tracking-wide pt-1">
+                Dynamic Transmission
+              </h4>
+              <p class="text-xs text-gray-300 font-sans leading-relaxed line-clamp-5">
+                {{ videoCaption || 'Coach Michael breaks down raw tension leaks happening at the bottom range of your hinge phase. Stop starving your system down to baseline targets while attempting to push progressive force sets.' }}
+              </p>
+            </div>
+            
+            <div class="pt-4 flex items-center justify-between text-xs font-display font-bold tracking-wider uppercase text-gray-500 border-t border-pro-mid-gray/20 relative z-10">
+              <span class="text-[10px] font-sans lowercase tracking-tight text-pro-purple-light flex items-center gap-1.5">
+                <span class="w-1.5 h-1.5 rounded-full bg-pro-purple-light"></span>
+                meta.graph_api_stream
+              </span>
+              <a :href="videoPermalink || fallbackInstagramLink" target="_blank" class="text-gray-400 hover:text-pro-purple-light transition-colors flex items-center gap-1.5 text-[11px]">
+                Open Post <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+              </a>
+            </div>
+          </div>
+
           <div class="premium-card rounded-3xl p-6 sm:p-8 border border-pro-mid-gray/40 flex flex-col justify-between bg-gradient-to-b from-pro-dark-gray to-pro-black/80 relative overflow-hidden min-h-[270px]">
             <span class="text-4xl text-pro-purple-light/20 font-serif leading-none select-none">“</span>
             <div class="space-y-4 my-auto">
@@ -58,24 +127,6 @@
             </div>
             <div class="pt-4 border-t border-pro-mid-gray/20 flex items-center gap-2 text-[10px] text-gray-500 font-sans uppercase tracking-widest">
               <i class="fa-solid fa-cross text-[9px] text-pro-purple-light"></i> Faith &amp; Iron Series
-            </div>
-          </div>
-
-          <div class="premium-card rounded-3xl p-6 sm:p-8 border border-pro-mid-gray/40 flex flex-col justify-between group min-h-[270px]">
-            <div class="space-y-3">
-              <span class="text-[10px] font-display font-bold uppercase tracking-widest text-pro-purple-light px-2 py-0.5 rounded bg-pro-purple/10">
-                Briefing Caption
-              </span>
-              <h4 class="text-base font-display font-black text-white uppercase tracking-wide">
-                Dynamic Transmission
-              </h4>
-              <p class="text-xs text-gray-400 font-sans leading-relaxed line-clamp-5">
-                {{ videoCaption || 'Coach Michael breaks down raw tension leaks happening at the bottom range of your hinge phase. Stop starving your system down to baseline targets while attempting to push progressive force sets.' }}
-              </p>
-            </div>
-            <div class="pt-4 flex items-center justify-between text-xs font-display font-bold tracking-wider uppercase text-gray-500 border-t border-pro-mid-gray/20">
-              <span class="text-[11px]">Dynamic Analysis Logs</span>
-              <i class="fa-solid fa-arrow-right text-pro-purple-light transform group-hover:translate-x-1 transition-transform"></i>
             </div>
           </div>
 
@@ -92,7 +143,7 @@
               </div>
               <div class="sm:col-span-4 flex justify-center sm:justify-end">
                 <a 
-                  :href="fallbackInstagramLink"
+                  :href="videoPermalink || fallbackInstagramLink"
                   target="_blank" 
                   rel="noopener"
                   class="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-pro-gold to-pro-gold-dark text-pro-black font-display font-black text-xs uppercase tracking-widest rounded-xl hover:scale-105 transition-transform duration-300 glow-gold text-center flex items-center justify-center gap-2"
@@ -112,34 +163,86 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
+import { useSwipe } from '@vueuse/core'
 
-// 1. CONFIGURATION BLOCK: Add Michael's long-lived Instagram Access Token here
-// When transitioning to a local video later, swap videoStreamUrl computed variable to your local source file string.
-const instagramAccessToken = 'YOUR_LONG_LIVED_ACCESS_TOKEN_HERE'
-const fallbackInstagramLink = 'https://www.instagram.com/reel/DYlI_jfOcSD/'
+// 1. DYNAMIC CONFIGURATION LAYER
+const config = useRuntimeConfig()
+const instagramAccessToken = config.public.instagramAccessToken
+const fallbackInstagramLink = 'https://www.instagram.com/fit2pro/'
 
-// 2. FETCH PIPELINE: Queries the Meta graph endpoint safely for basic account node lists
+// 2. STATE LOGIC & DOM REFS
+const currentVideoIndex = ref(0)
+const videoPlayer = ref(null)
+const swipeTarget = ref(null)
+
+// 3. FETCH PIPELINE
 const { data: feedData, pending, error } = await useFetch(`https://graph.instagram.com/me/media`, {
   query: {
     fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
     access_token: instagramAccessToken
   },
-  server: false // Ensures processing executes safely on the client view window layout
+  server: false 
 })
 
-// 3. COMPUTED TRANSFORMATION PARSERS
-// Automatically falls back gracefully if token is missing or if the latest item isn't a video/Reel
+// 4. COMPUTED SOURCE PARSERS
+const videos = computed(() => {
+  if (!feedData.value?.data) return []
+  return feedData.value.data.filter(item => item.media_type === 'VIDEO')
+})
+
 const videoStreamUrl = computed(() => {
-  if (!feedData.value?.data) return null
-  // Find the first available raw video resource in his content history
-  const latestVideo = feedData.value.data.find(item => item.media_type === 'VIDEO')
-  return latestVideo ? latestVideo.media_url : null
+  if (videos.value.length === 0) return null
+  return videos.value[currentVideoIndex.value]?.media_url || null
 })
 
 const videoCaption = computed(() => {
-  if (!feedData.value?.data) return null
-  const latestVideo = feedData.value.data.find(item => item.media_type === 'VIDEO')
-  return latestVideo ? latestVideo.caption : null
+  if (videos.value.length === 0) return null
+  return videos.value[currentVideoIndex.value]?.caption || null
+})
+
+const videoPermalink = computed(() => {
+  if (videos.value.length === 0) return null
+  return videos.value[currentVideoIndex.value]?.permalink || null
+})
+
+// 5. AUTO-PLAY TRACKING UTILITY
+const handleVideoAutoplay = async () => {
+  await nextTick()
+  if (videoPlayer.value) {
+    try {
+      videoPlayer.value.load()
+      await videoPlayer.value.play()
+    } catch (err) {
+      console.warn("Autoplay execution blocked:", err)
+    }
+  }
+}
+
+// 6. NAVIGATION METHODS
+const nextVideo = () => {
+  if (currentVideoIndex.value < videos.value.length - 1) {
+    currentVideoIndex.value++
+    handleVideoAutoplay()
+  }
+}
+
+const prevVideo = () => {
+  if (currentVideoIndex.value > 0) {
+    currentVideoIndex.value--
+    handleVideoAutoplay()
+  }
+}
+
+// 7. TOUCH GESTURE INTERCEPTION LAYER
+const { isSwiping, direction } = useSwipe(swipeTarget, {
+  threshold: 40,
+  onSwipeEnd: (e, direction) => {
+    if (direction === 'left') {
+      nextVideo()
+    } else if (direction === 'right') {
+      prevVideo()
+    }
+  }
 })
 </script>

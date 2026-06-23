@@ -13,6 +13,12 @@ export default defineNuxtConfig({
     '@vueuse/motion/nuxt'
   ],
 
+  runtimeConfig: {
+    public: {
+      instagramAccessToken: process.env.NUXT_INSTAGRAM_ACCESS_TOKEN || ''
+    }
+  },
+
   // Vite configuration for Tailwind v4 compiler
   vite: {
     plugins: [
