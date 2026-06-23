@@ -5,7 +5,7 @@
 
     <div class="text-center relative z-10 cinematic-zoom-box w-full">
       
-      <h2 class="text-5xl sm:text-7xl lg:text-8xl font-display font-black uppercase tracking-tight select-none flex items-center justify-center master-brand-trigger mx-auto">
+      <h2 class="text-5xl sm:text-7xl lg:text-8xl font-display font-black uppercase tracking-tight select-none flex items-center justify-center master-brand-trigger ms-10">
         <span class="text-gradient-purple">FIT</span>
         
         <span class="text-gradient-gray logo-number-two mr-2 sm:mr-4">2</span>
