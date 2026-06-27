@@ -67,13 +67,14 @@
         <!-- ROW 1, CELL 2: Nutrition Hub (Spans 1 Column) -->
         <div class="premium-card rounded-3xl p-8 flex flex-col justify-between group">
           <div class="space-y-4">
-            <h3 class="text-xl font-display font-bold text-white pt-2">Nutrition Hub</h3>
+            <h3 class="text-xl font-display font-bold text-white pt-2">The Blueprint Story</h3>
             <p class="text-sm text-gray-400 font-sans leading-relaxed">
-              Fuel the work. Get completely tailored metabolic tracking, target metrics, and elite fueling strategies built step-by-step around your physical output.
+              Engineered out of raw necessity. Learn how Coach Michael reconstructed his own biomechanical alignment, built unyielding physical sovereignty, and refined the elite execution methodologies driving our training standard.
             </p>
           </div>
-          <NuxtLink to="/nutrition" class="text-xs font-display font-bold uppercase tracking-wider text-pro-gold flex items-center gap-1 hover:underline pt-4">
-            Optimize Fuel →
+          
+          <NuxtLink to="/about#testimonials" class="text-xs font-display font-bold uppercase tracking-wider text-pro-gold flex items-center gap-1 hover:underline pt-4">
+            Meet The Trainer &rarr;
           </NuxtLink>
         </div>
 

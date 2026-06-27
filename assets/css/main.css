@@ -32,6 +32,11 @@
   }
 }
 
+/* Dynamically offsets anchor scrolling elements to factor in your top fixed header blueprint */
+[id] {
+  scroll-margin-top: 6rem; /* Equivalent to 96px (adjust based on your exact navbar thickness) */
+}
+
 /* Custom Premium Utilities */
 @layer utilities {
   /* Logo-accurate Gold Gradient */

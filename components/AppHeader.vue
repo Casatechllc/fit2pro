@@ -36,7 +36,7 @@
         <!-- DESKTOP CALL TO ACTION -->
         <div class="hidden md:flex items-center">
           <NuxtLink 
-            to="#contact" 
+            to="/about#contact" 
             class="px-5 py-2.5 bg-gradient-to-r from-pro-purple/20 to-pro-purple-light/20 border border-pro-purple text-white font-display text-xs font-bold uppercase tracking-widest rounded-xl hover:from-pro-purple hover:to-pro-purple-light transition-all duration-300 glow-purple"
           >
             Join Elite
@@ -85,7 +85,7 @@
         </NuxtLink>
         
         <NuxtLink 
-          to="#contact"
+          to="/about#contact"
           @click="isMobileMenuOpen = false"
           class="w-full text-center mt-2 px-6 py-3 bg-gradient-to-r from-pro-purple to-pro-purple-light text-white font-display font-bold uppercase tracking-wider rounded-xl glow-purple"
         >

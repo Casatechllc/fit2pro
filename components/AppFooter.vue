@@ -20,15 +20,15 @@
           </p>
           <!-- Social Icons Line -->
           <div class="flex items-center gap-4 text-gray-500 pt-2">
-            <a href="#" class="hover:text-pro-purple-light transition-colors text-base" aria-label="Instagram">
+            <a href="https://www.instagram.com/fit2pro/" class="hover:text-pro-purple-light transition-colors text-base" aria-label="Instagram">
               <i class="fa-brands fa-instagram"></i>
             </a>
-            <a href="#" class="hover:text-pro-purple-light transition-colors text-base" aria-label="YouTube">
+            <!-- <a href="#" class="hover:text-pro-purple-light transition-colors text-base" aria-label="YouTube">
               <i class="fa-brands fa-youtube"></i>
             </a>
             <a href="#" class="hover:text-pro-purple-light transition-colors text-base" aria-label="X (formerly Twitter)">
               <i class="fa-brands fa-x-twitter"></i>
-            </a>
+            </a> -->
           </div>
         </div>
 

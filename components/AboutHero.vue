@@ -31,7 +31,7 @@
         <div class="grid grid-cols-3 gap-4 pt-6 max-w-md mx-auto lg:mx-0 border-t border-pro-mid-gray/20">
           <div class="space-y-1">
             <p class="text-2xl sm:text-3xl font-display font-black text-white">100%</p>
-            <p class="text-[9px] font-sans uppercase tracking-widest text-gray-500 font-bold">Custom Coding</p>
+            <p class="text-[9px] font-sans uppercase tracking-widest text-gray-500 font-bold">Custom Coaching</p>
           </div>
           <div class="space-y-1">
             <p class="text-2xl sm:text-3xl font-display font-black text-pro-gold">NATIVE</p>

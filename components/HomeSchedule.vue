@@ -1,11 +1,9 @@
 <template>
   <section id="schedule" class="py-16 bg-pro-black px-4 sm:px-6 lg:px-8 relative overflow-hidden border-t border-pro-mid-gray/20">
-    <!-- Spatial background decoration -->
     <div class="absolute top-1/3 left-1/4 w-[600px] h-[600px] bg-pro-purple/5 blur-[160px] rounded-full pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto space-y-12">
       
-      <!-- Section Header -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-pro-mid-gray/20 pb-6">
         <div class="space-y-1 text-center md:text-left">
           <span class="text-xs font-display font-bold uppercase tracking-widest text-pro-gold">
@@ -20,7 +18,6 @@
         </p>
       </div>
 
-      <!-- Feature Card List Container -->
       <div class="space-y-8">
         <div 
           v-for="(session, index) in activeSchedule" 
@@ -28,31 +25,33 @@
           class="premium-card rounded-3xl border border-pro-mid-gray/40 bg-gradient-to-br from-pro-dark-gray via-pro-black to-pro-black overflow-hidden relative group grid grid-cols-1 lg:grid-cols-12 min-h-[400px]"
           v-motion-fade-visible
         >
-          <!-- VISUAL IMAGE SIDE (Lg: 5-columns wide) -->
-          <div class="lg:col-span-5 relative aspect-video lg:aspect-auto bg-pro-black overflow-hidden border-b lg:border-b-0 lg:border-r border-pro-mid-gray/40">
-            <!-- Background Image with Custom Filters -->
+          <div 
+            @click="openImageModal(session)"
+            class="lg:col-span-5 relative aspect-video lg:aspect-auto bg-pro-black overflow-hidden border-b lg:border-b-0 lg:border-r border-pro-mid-gray/40 cursor-pointer group/img"
+          >
             <NuxtImg 
               :src="session.imageSrc" 
               :alt="session.title"
-              class="w-full h-full object-cover filter brightness-[0.75] contrast-[1.1] grayscale-[30%] transition-transform duration-700 group-hover:scale-105"
+              class="w-full h-full object-cover filter brightness-[0.75] contrast-[1.1] grayscale-[30%] transition-transform duration-700 group-hover/img:scale-105"
               loading="lazy"
             />
-            <!-- Dark Gradient Vignette Layer -->
             <div class="absolute inset-0 bg-gradient-to-t from-pro-black via-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-pro-black/80"></div>
             
-            <!-- Live Event Floating State Tag -->
-            <div class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-pro-black/70 border border-white/10 backdrop-blur-md text-[9px] font-mono font-bold text-white uppercase tracking-widest">
+            <div class="absolute inset-0 bg-pro-purple/10 opacity-0 group-hover/img:opacity-100 transition-opacity duration-300 flex items-center justify-center z-10">
+              <div class="w-12 h-12 rounded-full bg-pro-black/80 border border-pro-gold/40 flex items-center justify-center text-pro-gold text-sm backdrop-blur-sm shadow-xl">
+                <i class="fa-solid fa-magnifying-glass-plus"></i>
+              </div>
+            </div>
+
+            <div class="absolute top-4 left-4 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-pro-black/70 border border-white/10 backdrop-blur-md text-[9px] font-mono font-bold text-white uppercase tracking-widest z-20">
               <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
               {{ session.statusTag }}
             </div>
           </div>
 
-          <!-- INFORMATION BRIEFING SIDE (Lg: 7-columns wide) -->
           <div class="lg:col-span-7 p-6 sm:p-10 flex flex-col justify-between space-y-6 relative z-10">
             <div class="space-y-4">
-              <!-- Badges Header Row -->
               <div class="flex flex-wrap items-center gap-2">
-                <!-- Highlighted Feature Crowd Badge -->
                 <span class="text-[9px] font-display font-black uppercase tracking-widest text-pro-black px-2.5 py-1 rounded-md bg-gradient-to-r from-pro-gold to-pro-gold-dark shadow-md">
                   <i class="fa-solid fa-fire text-[10px] mr-0.5"></i> {{ session.crowdBadge }}
                 </span>
@@ -61,7 +60,6 @@
                 </span>
               </div>
 
-              <!-- Main Titles -->
               <div class="space-y-1">
                 <h4 class="text-xl sm:text-2xl font-display font-black text-white uppercase tracking-wide leading-none">
                   {{ session.title }}
@@ -72,12 +70,10 @@
                 </p>
               </div>
 
-              <!-- Compelling Event Description Block -->
               <p class="text-xs sm:text-sm text-gray-300 font-sans leading-relaxed max-w-xl">
                 {{ session.description }}
               </p>
 
-              <!-- DROPDOWN ACCORDION CONTROLS FOR TURN-BY-TURN DIRECTIONS -->
               <div v-if="session.directions" class="pt-2">
                 <button 
                   @click="toggleDirections(index)"
@@ -91,7 +87,6 @@
                   ></i>
                 </button>
 
-                <!-- Collapsible Content Wrapper Grid -->
                 <div 
                   class="grid transition-all duration-300 ease-in-out"
                   :class="expandedDirections[index] ? 'grid-rows-[1fr] opacity-100 mt-4' : 'grid-rows-[0fr] opacity-0 pointer-events-none'"
@@ -121,7 +116,6 @@
               </div>
             </div>
 
-            <!-- Location Mapping & CTA Footer Action Layout -->
             <div class="pt-6 border-t border-pro-mid-gray/20 grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
               <div class="sm:col-span-7 space-y-1">
                 <p class="text-xs font-display font-black text-white uppercase tracking-wide flex items-center gap-1.5">
@@ -151,20 +145,45 @@
       </div>
 
     </div>
+
+    <ScheduleImageModal 
+      :is-open="isModalOpen"
+      :session="selectedSession"
+      @close="closeImageModal"
+    />
   </section>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 
-// Toggles separate indices cleanly so actions on Card 2 don't accidentally open Card 1 templates
+// Accordion Toggles
 const expandedDirections = ref({})
-
 const toggleDirections = (index) => {
   expandedDirections.value[index] = !expandedDirections.value[index]
 }
 
-// MODULAR CONFIGURATION ARRAY MAP
+// MODAL REACTIVE MANAGEMENT ARCHITECTURE
+const isModalOpen = ref(false)
+const selectedSession = ref({})
+
+const openImageModal = (sessionTarget) => {
+  selectedSession.value = sessionTarget
+  isModalOpen.value = true
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'hidden'
+  }
+}
+
+const closeImageModal = () => {
+  isModalOpen.value = false
+  selectedSession.value = {}
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = ''
+  }
+}
+
+// DATA LAYER CONFIGURATION MAP
 const activeSchedule = ref([
   {
     title: 'High-Intensity Interval Training',
@@ -192,7 +211,6 @@ const activeSchedule = ref([
     imageSrc: '/images/east-rock-run-map.png', 
     mapLink: 'https://maps.google.com/?q=Orange+St+and+Cold+Spring+Rd+New+Haven+CT+06511',
     
-    // Turn-by-turn fallback array for navigation tracking
     directions: [
       { instruction: 'Take off / Launch directly at the corner of Orange St & Cold Spring Rd', distance: 'Start' },
       { instruction: 'Go straight onto Orange St', distance: '1.0 mi' },
