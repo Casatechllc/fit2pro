@@ -105,7 +105,7 @@
         </div>
         
         <a 
-          href="#schedule" 
+          href="/#schedule" 
           class="w-full sm:w-auto px-6 py-3.5 bg-gradient-to-r from-pro-gold to-pro-gold-dark text-pro-black font-display font-black text-xs uppercase tracking-widest rounded-xl hover:scale-105 transition-transform duration-300 text-center select-none"
         >
           View Field Schedule

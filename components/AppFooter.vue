@@ -55,6 +55,7 @@
           </p>
           
           <!-- Secondary Minimalist Input Bar (No backend logic wired yet) -->
+           <ClientOnly>
           <form @submit.prevent class="w-full flex items-center p-1.5 rounded-xl bg-pro-dark-gray border border-pro-mid-gray/60 max-w-md">
             <input 
               type="email" 
@@ -69,6 +70,7 @@
               Join
             </button>
           </form>
+          </ClientOnly>
         </div>
 
       </div>

@@ -6,17 +6,22 @@
   >
     <!-- AFTER IMAGE (Base Layer) -->
     <div class="absolute inset-0 w-full h-full">
-      <img 
-        :src="afterImg" 
-        alt="After Transformation" 
-        class="w-full h-full object-cover filter brightness-[0.9] contrast-[1.05]"
-        draggable="false"
-      />
-      <!-- Dynamic Brand Indicator Badges -->
-      <span class="absolute bottom-4 right-4 z-10 px-2 py-1 rounded bg-pro-black/80 border border-pro-purple/30 text-[9px] font-mono uppercase tracking-widest text-pro-purple-light backdrop-blur-sm">
-        AFTER SYSTEM ACCAPTANCE
-      </span>
-    </div>
+  <img 
+    :src="afterImg" 
+    alt="After Transformation" 
+    class="w-full h-full object-cover filter brightness-[0.9] contrast-[1.05]"
+    draggable="false"
+  />
+  
+  <div 
+    class="absolute inset-0 w-full h-full pointer-events-none"
+    :style="{ clipPath: `polygon(${sliderPosition}% 0, 100% 0, 100% 100%, ${sliderPosition}% 100%)` }"
+  >
+    <span class="absolute bottom-4 right-4 z-10 px-2 py-1 rounded bg-pro-black/80 border border-pro-purple/30 text-[9px] font-mono uppercase tracking-widest text-pro-purple-light backdrop-blur-sm">
+      AFTER SYSTEM ACCEPTANCE
+    </span>
+  </div>
+</div>
 
     <!-- BEFORE IMAGE (Overlay Layer - Clipped) -->
     <div 

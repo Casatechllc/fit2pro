@@ -38,7 +38,7 @@
         <!-- CTA Button Group with Metallic Glow Effects -->
         <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
           <NuxtLink 
-            to="#programs" 
+            to="/programs" 
             class="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-pro-purple to-pro-purple-light text-white font-display font-bold rounded-lg tracking-wider uppercase transition-transform hover:scale-105 active:scale-95 glow-purple text-center"
           >
             Claim Your Program

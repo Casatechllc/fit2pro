@@ -75,16 +75,17 @@
 
           <!-- CTA CTA Action -->
           <div class="pt-8">
-            <button 
+            <NuxtLink 
+            to="/about#contact"
               :class="[
-                'w-full py-3.5 font-display font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 cursor-pointer text-center border',
+                'w-full py-3.5 font-display font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 cursor-pointer text-center border px-3.5',
                 program.accent === 'gold' 
                   ? 'bg-gradient-to-r from-pro-gold-dark to-pro-gold text-pro-black border-transparent hover:shadow-lg hover:shadow-pro-gold/10' 
                   : 'bg-pro-dark-gray text-white border-pro-mid-gray hover:border-pro-purple-light hover:bg-pro-mid-gray/40'
               ]"
             >
               Apply For This Track
-            </button>
+            </NuxtLink>
           </div>
 
         </div>

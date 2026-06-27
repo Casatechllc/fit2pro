@@ -82,13 +82,19 @@
             </div>
 
             <!-- 4. GET GUIDE PREMIUM CALL TO ACTION BUTTON -->
-            <div class="pt-4 mt-2">
+            <div>
               <button 
+                @click="openGuide"
                 class="w-full py-4 bg-gradient-to-r from-pro-purple to-pro-purple-light text-white font-display font-black text-xs uppercase tracking-widest rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] glow-purple cursor-pointer flex items-center justify-center gap-2"
               >
                 <i class="fa-solid fa-download text-xs"></i>
                 Get Nutrition Guide
               </button>
+
+              <NutritionPdfModal 
+                :is-open="guideActive"
+                @close="closeGuide"
+              />
             </div>
 
           </div>
@@ -141,5 +147,32 @@
 </template>
 
 <script setup>
-// Pure UI architecture setup for the standalone page context
+import { ref } from 'vue'
+
+const guideActive = ref(false)
+
+const openGuide = () => {
+  guideActive.value = true
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = 'hidden' // Secure frame background scrolling propagation lockouts
+  }
+}
+
+const closeGuide = () => {
+  guideActive.value = false
+  if (typeof document !== 'undefined') {
+    document.body.style.overflow = '' // Re-enable frame scrolling bounds cleanly
+  }
+}
+
+useHead({
+  title: 'Fit2Pro Nutrition Guide | Elite Performance Fueling',
+  meta: [
+    { name: 'description', content: 'Download the complete Tactical Fuel Blueprint by FIT2PRO. Advanced biomechanical nutrition protocols engineered for high-performers.' },
+    { property: 'og:title', content: 'Fit2Pro Nutrition Guide' },
+    { property: 'og:description', content: 'Advanced athletic nutrition protocols engineered for high-performers.' },
+    { property: 'og:type', content: 'document' }
+  ]
+})
+
 </script>
