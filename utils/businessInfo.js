@@ -5,9 +5,9 @@ export const businessInfo = {
   coachName: 'Coach Michael Billups',
   
   // Communication Channels
-  phone: '(203) 555-0199', // Public display format
-  rawPhone: '+12035550199', // E.164 format for native click-to-call hrefs
-  email: 'briefing@fit2pro.com',
+  phone: '(203) 390-0297', // Public display format
+  rawPhone: '+12033900297', // E.164 format for native click-to-call hrefs
+  email: 'michaelb@fit2protraining.com',
   
   // Physical Training Grounds
   address: 'Wilbur Cross High School, 181 Mitchell Dr, New Haven, CT 06511',
@@ -17,7 +17,7 @@ export const businessInfo = {
   // Social Handles & Links
   instagramHandle: '@fit2pro',
   instagramLink: 'https://www.instagram.com/fit2pro/',
-  facebookLink: 'https://www.facebook.com/',
+  // facebookLink: 'https://www.facebook.com/',
   
   // Operational Parameters
   status: 'System Operational',

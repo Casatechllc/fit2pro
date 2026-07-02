@@ -96,7 +96,9 @@
         </div>
 
         <!-- Instantiating the clean, decoupled form input component layout block -->
+         <ClientOnly>
         <ContactForm @submitBriefing="handleFormSubmission" />
+        </ClientOnly>
       </div>
 
     </div>
