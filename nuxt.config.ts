@@ -3,6 +3,17 @@ import tailwindcss from '@tailwindcss/vite'
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
+  future: {
+    compatibilityVersion: 4,
+  },
+
+  nitro: {
+    preset: 'netlify',
+    output: {
+      publicDir: 'dist' // Hard-forces the compilation engine to name the folder exactly what the Netlify UI expects
+    }
+  },
+  
   devtools: { enabled: true },
 
   // Global CSS registration
