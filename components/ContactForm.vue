@@ -3,8 +3,10 @@
     
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       <div class="space-y-1.5">
-        <label class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">First Name</label>
+        <label for="firstName" class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">First Name</label>
         <input 
+          id="firstName"
+          name="firstName"
           v-model="formData.firstName" 
           type="text" 
           required
@@ -13,8 +15,10 @@
         />
       </div>
       <div class="space-y-1.5">
-        <label class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Last Name</label>
+        <label for="lastName" class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Last Name</label>
         <input 
+          id="lastName"
+          name="lastName"
           v-model="formData.lastName" 
           type="text" 
           required
@@ -25,8 +29,10 @@
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Email Address</label>
+      <label for="email" class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Email Address</label>
       <input 
+        id="email"
+        name="email"
         v-model="formData.email" 
         type="email" 
         required
@@ -36,20 +42,24 @@
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Phone Number</label>
+      <label for="phone" class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Phone Number</label>
       <input 
+        id="phone"
+        name="phone"
         v-model="formData.phone" 
         type="tel" 
         required
-        placeholder="203-000-0000"
+        placeholder="540-000-0000"
         class="w-full px-4 py-3 rounded-xl border border-pro-mid-gray/40 bg-pro-black/40 text-white text-xs font-sans placeholder-gray-600 focus:outline-none focus:border-pro-purple-light/60 transition-colors"
       />
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Primary Objective</label>
+      <label for="objective" class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Primary Objective</label>
       <div class="relative">
         <select 
+          id="objective"
+          name="objective"
           v-model="formData.objective"
           class="w-full px-4 py-3 rounded-xl border border-pro-mid-gray/40 bg-pro-black/40 text-white text-xs font-sans focus:outline-none focus:border-pro-purple-light/60 transition-colors appearance-none cursor-pointer text-left"
         >
@@ -67,8 +77,10 @@
     </div>
 
     <div class="space-y-1.5">
-      <label class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Intel / Message Briefing</label>
+      <label for="message" class="text-[10px] font-display font-black uppercase tracking-widest text-gray-400">Intel / Message Briefing</label>
       <textarea 
+        id="message"
+        name="message"
         v-model="formData.message" 
         rows="4"
         placeholder="Outline your current fitness parameters or structural goals..."
@@ -107,7 +119,7 @@ const formData = ref({
   firstName: '',
   lastName: '',
   email: '',
-  phone: '', // Initialized state parameter
+  phone: '', 
   objective: 'HIIT & Track Conditioning',
   message: ''
 })
@@ -119,11 +131,10 @@ const handleSubmit = async () => {
   errorMessage.value = ''
   showSuccess.value = false
   
-  // 1. Pack variables up into unified alignment keys expected by backend handlers
   const unifiedPayload = {
     name: `${formData.value.firstName.trim()} ${formData.value.lastName.trim()}`,
     email: formData.value.email,
-    phone: formData.value.phone.trim(), // UPDATED: Now maps to active input data parameters
+    phone: formData.value.phone.trim(), 
     serviceType: formData.value.objective,
     homeSize: 'Athletic Intake Blueprint',
     message: formData.value.message
@@ -139,7 +150,6 @@ const handleSubmit = async () => {
       showSuccess.value = true
       emit('submitBriefing', { ...unifiedPayload })
       
-      // Clean Form back to default state safely
       formData.value = { 
         firstName: '', 
         lastName: '', 
