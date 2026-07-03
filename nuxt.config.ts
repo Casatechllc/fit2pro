@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       publicDir: 'dist' // Hard-forces the compilation engine to name the folder exactly what the Netlify UI expects
     }
   },
-  
+
   devtools: { enabled: true },
 
   // Global CSS registration
@@ -74,9 +74,9 @@ export default defineNuxtConfig({
       link: [
         // App Icons & Favicons (Placed inside your /public directory)
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
-        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon-32x32.png' },
-        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon-16x16.png' },
-        { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' },
+        { rel: 'icon', type: 'image/png', sizes: '32x32', href: '/favicon.ico' },
+        { rel: 'icon', type: 'image/png', sizes: '16x16', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', sizes: '180x180', href: '/favicon.ico' },
         { rel: 'mask-icon', href: '/safari-pinned-tab.svg', color: '#4c1d95' }, // Pinned tab mask icon color matching your purple accent
 
         // Google Fonts connection
