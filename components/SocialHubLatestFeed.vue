@@ -17,6 +17,7 @@
           <a 
             href="https://instagram.com/fit2pro" 
             target="_blank" 
+            rel="noopener"
             class="px-4 py-2 bg-pro-dark-gray border border-pro-mid-gray hover:border-pro-purple-light hover:text-pro-purple-light rounded-xl text-xs font-display font-bold uppercase tracking-wider text-white transition-all flex items-center gap-2"
           >
             <i class="fa-brands fa-instagram text-sm"></i>
@@ -25,6 +26,7 @@
         </div>
       </div>
 
+      <!-- LOADING STATE -->
       <div v-if="pending" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 py-12">
         <div 
           v-for="n in itemsPerPage" 
@@ -35,6 +37,7 @@
         </div>
       </div>
 
+      <!-- ERROR / EMPTY STATE -->
       <div v-else-if="error || !paginatedFeed.length" class="text-center py-16 bg-pro-dark-gray/25 border border-pro-mid-gray/20 rounded-3xl p-6">
         <div class="w-12 h-12 rounded-2xl bg-pro-black/40 border border-pro-mid-gray flex items-center justify-center text-gray-500 mx-auto mb-4">
           <i class="fa-solid fa-border-all"></i>
@@ -45,6 +48,7 @@
         </p>
       </div>
 
+      <!-- VISUAL MEDIA GRID -->
       <div v-else class="space-y-8">
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
           <div 
@@ -57,15 +61,16 @@
             :enter="{ opacity: 1, scale: 1, transition: { duration: 400, delay: index * 40 } }"
           >
             <img 
-              :src="post.media_type === 'VIDEO' ? (post.thumbnail_url || post.media_url) : post.media_url" 
+              :src="post.posterUrl || post.media_url || post.thumbnail_url" 
               :alt="post.caption || 'FIT2PRO Intelligence Drop'"
+              referrerpolicy="no-referrer"
               class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter brightness-[0.8] group-hover:brightness-[0.4]"
               loading="lazy"
             />
 
             <div class="absolute inset-0 bg-gradient-to-t from-pro-black via-pro-black/30 to-transparent lg:opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-4 z-10">
               <div class="flex justify-end text-white text-xs drop-shadow">
-                <i v-if="post.media_type === 'CAROUSEL_ALBUM'" class="bfa-solid fa-images"></i>
+                <i v-if="post.media_type === 'CAROUSEL_ALBUM'" class="fa-solid fa-images"></i>
                 <i v-else-if="post.media_type === 'VIDEO'" class="fa-solid fa-film text-pro-gold"></i>
                 <i v-else class="fa-solid fa-camera"></i>
               </div>
@@ -77,6 +82,7 @@
           </div>
         </div>
 
+        <!-- PAGINATION CONTROLS -->
         <div v-if="totalPages > 1" class="flex items-center justify-center gap-4 pt-4">
           <button 
             @click="prevPage"
@@ -104,10 +110,11 @@
 
     </div>
 
+    <!-- ENGAGEMENT MODAL -->
     <InstagramPostModal 
       :is-open="modalActive"
       v-model:post="activeSelection"
-      :feed="paginatedFeed"
+      :feed="allPostsArray"
       @close="closeEngagementModal"
     />
   </section>
@@ -116,15 +123,12 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 
-const config = useRuntimeConfig()
-const instagramAccessToken = config.public.instagramAccessToken
-
 const currentPage = ref(1)
 const itemsPerPage = 12
 
 // MODAL CONTROLLER STATE MACHINES
 const modalActive = ref(false)
-const activeSelection = ref({})
+const activeSelection = ref(null)
 
 const triggerPostEngagement = (selectedPost) => {
   activeSelection.value = selectedPost
@@ -134,22 +138,15 @@ const triggerPostEngagement = (selectedPost) => {
 
 const closeEngagementModal = () => {
   modalActive.value = false
-  activeSelection.value = {}
+  activeSelection.value = null
   if (typeof document !== 'undefined') document.body.style.overflow = ''
 }
 
-// INTAKE CORE INSTAGRAM API FEED
-const { data: rawMediaFeed, pending, error } = await useFetch('https://graph.instagram.com/me/media', {
-  query: {
-    fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
-    access_token: instagramAccessToken
-  },
-  server: false
-})
+// FETCH FROM LOCAL SERVER PROXY TO LOAD FULL METRICS (LIKES & COMMENTS)
+const { data: feedPayload, pending, error } = await useFetch('/api/instagram/feed')
 
 const allPostsArray = computed(() => {
-  if (!rawMediaFeed.value?.data) return []
-  return rawMediaFeed.value.data
+  return feedPayload.value?.posts || feedPayload.value?.videos || []
 })
 
 const totalPages = computed(() => Math.ceil(allPostsArray.value.length / itemsPerPage))

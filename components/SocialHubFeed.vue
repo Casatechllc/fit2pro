@@ -5,6 +5,7 @@
     <div class="max-w-7xl mx-auto space-y-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         
+        <!-- LEFT COLUMN: HYBRID NATIVE VIDEO / THUMBNAIL FALLBACK CAROUSEL -->
         <div class="lg:col-span-4 premium-card rounded-3xl p-4 border border-pro-mid-gray/40 bg-pro-dark-gray/20 flex flex-col justify-center relative overflow-hidden min-h-[580px]">
           <span class="w-full flex items-center justify-between text-[10px] font-display font-black uppercase tracking-widest text-pro-gold mb-3 px-2">
             <span class="flex items-center gap-2">
@@ -16,70 +17,110 @@
             </span>
           </span>
           
-          <div v-if="pending" class="w-full aspect-[9/16] rounded-2xl bg-pro-black/40 border border-pro-mid-gray/20 flex flex-col items-center justify-center text-gray-500 text-xs gap-3">
-            <i class="fa-solid fa-circle-notch animate-spin text-xl text-pro-purple-light"></i>
-            Syncing Intel Stream...
-          </div>
-
-          <div v-else-if="error || !videoStreamUrl" class="w-full aspect-[9/16] rounded-2xl bg-pro-black border border-pro-mid-gray/50 overflow-hidden relative flex flex-col justify-end p-6 group">
-            <div class="absolute inset-0 z-0">
-              <NuxtImg 
-                src="/watermarked_img_13735354226153548343.png" 
-                class="w-full h-full object-cover filter brightness-[0.3] contrast-[1.1]"
-              />
-              <div class="absolute inset-0 bg-gradient-to-t from-pro-black to-transparent"></div>
-            </div>
-            <div class="relative z-10 space-y-2 text-center sm:text-left">
-              <p class="text-xs font-display font-bold text-white uppercase">API Link Initialized</p>
-              <p class="text-[11px] text-gray-400 font-sans">Connect your Long-Lived User Token to stream raw portrait source fields natively.</p>
-              <a :href="fallbackInstagramLink" target="_blank" class="inline-flex items-center gap-1.5 text-[11px] font-display font-bold uppercase tracking-wider text-pro-gold pt-2 hover:underline">
-                View On Instagram <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-              </a>
-            </div>
-          </div>
-
-          <div v-else class="w-full flex flex-col gap-4">
-            <div 
-              ref="swipeTarget" 
-              class="w-full aspect-[9/16] overflow-hidden rounded-2xl bg-black border border-pro-mid-gray/40 flex justify-center shadow-2xl relative group touch-pan-y"
-            >
-              <video
-                ref="videoPlayer"
-                :key="videoStreamUrl"
-                :src="videoStreamUrl"
-                class="w-full h-full object-cover filter brightness-[0.9] contrast-[1.05]"
-                controls
-                playsinline
-                preload="auto"
-              ></video>
+          <ClientOnly>
+            <!-- LOADING STATE -->
+            <div v-if="pending" class="w-full aspect-[9/16] rounded-2xl bg-pro-black/40 border border-pro-mid-gray/20 flex flex-col items-center justify-center text-gray-500 text-xs gap-3">
+              <i class="fa-solid fa-circle-notch animate-spin text-xl text-pro-purple-light"></i>
+              Syncing Intel Stream...
             </div>
 
-            <div class="flex items-center justify-between px-2">
-              <button 
-                @click="prevVideo" 
-                :disabled="currentVideoIndex === 0"
-                class="w-10 h-10 rounded-xl border border-pro-mid-gray/40 bg-pro-dark-gray/40 text-white flex items-center justify-center hover:bg-pro-purple/20 hover:border-pro-purple-light/40 active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none group"
-                aria-label="Previous newer video"
+            <!-- ERROR STATE -->
+            <div v-else-if="error || !activeVideo" class="w-full aspect-[9/16] rounded-2xl bg-pro-black border border-pro-mid-gray/50 overflow-hidden relative flex flex-col justify-end p-6 group">
+              <div class="absolute inset-0 z-0">
+                <NuxtImg 
+                  src="/fit2pro-logo.png" 
+                  class="w-full h-full object-cover filter brightness-[0.3] contrast-[1.1]"
+                />
+                <div class="absolute inset-0 bg-gradient-to-t from-pro-black to-transparent"></div>
+              </div>
+              <div class="relative z-10 space-y-2 text-center sm:text-left">
+                <p class="text-xs font-display font-bold text-white uppercase">API Stream Syncing</p>
+                <p class="text-[11px] text-gray-400 font-sans">Connecting to live feed sources...</p>
+              </div>
+            </div>
+
+            <!-- HYBRID MEDIA CONTAINER -->
+            <div v-else class="w-full flex flex-col gap-4">
+              <div 
+                ref="swipeTarget" 
+                class="w-full aspect-[9/16] overflow-hidden rounded-2xl bg-black border border-pro-mid-gray/40 flex justify-center shadow-2xl relative group touch-pan-y"
               >
-                <i class="fa-solid fa-arrow-left text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
-              </button>
+                <!-- MODE A: Direct MP4 exists -> HTML5 Native Video Tag -->
+                <video
+                  v-if="activeVideo.hasDirectMp4"
+                  ref="videoPlayer"
+                  :key="`video-${activeVideo.id}`"
+                  :src="activeVideo.videoUrl"
+                  :poster="activeVideo.posterUrl"
+                  referrerpolicy="no-referrer"
+                  class="w-full h-full object-cover filter brightness-[0.9] contrast-[1.05]"
+                  controls
+                  muted
+                  playsinline
+                  preload="auto"
+                ></video>
 
-              <span class="text-[10px] font-display font-bold text-gray-400 tracking-widest uppercase select-none">
-                Swipe or Browse
-              </span>
+                <!-- MODE B: Meta withheld MP4 -> Fallback Thumbnail with Direct Link Overlay -->
+                <div v-else class="relative w-full h-full group/reel">
+                  <img 
+                    :src="activeVideo.posterUrl" 
+                    :alt="videoCaption || 'FIT2PRO Reel'"
+                    referrerpolicy="no-referrer"
+                    class="w-full h-full object-cover filter brightness-[0.85]"
+                  />
+                  <a 
+                    :href="videoPermalink || fallbackInstagramLink" 
+                    target="_blank" 
+                    rel="noopener"
+                    class="absolute inset-0 bg-pro-black/40 backdrop-blur-[2px] flex flex-col items-center justify-center gap-3 text-white transition-all group-hover/reel:bg-pro-black/60"
+                  >
+                    <div class="w-14 h-14 rounded-full bg-pro-gold text-pro-black flex items-center justify-center text-xl shadow-2xl group-hover/reel:scale-110 transition-transform">
+                      <i class="fa-solid fa-play ml-1"></i>
+                    </div>
+                    <span class="text-xs font-display font-black uppercase tracking-widest text-pro-gold bg-pro-black/80 px-3 py-1.5 rounded-xl border border-pro-gold/30 shadow-lg">
+                      Watch Reel on Instagram <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
 
-              <button 
-                @click="nextVideo" 
-                :disabled="currentVideoIndex === videos.length - 1"
-                class="w-10 h-10 rounded-xl border border-pro-mid-gray/40 bg-pro-dark-gray/40 text-white flex items-center justify-center hover:bg-pro-purple/20 hover:border-pro-purple-light/40 active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none group"
-                aria-label="Next older video"
-              >
-                <i class="fa-solid fa-arrow-right text-xs transform group-hover:translate-x-0.5 transition-transform"></i>
-              </button>
+              <!-- CAROUSEL CONTROLS -->
+              <div class="flex items-center justify-between px-2">
+                <button 
+                  @click="prevVideo" 
+                  :disabled="currentVideoIndex === 0"
+                  class="w-10 h-10 rounded-xl border border-pro-mid-gray/40 bg-pro-dark-gray/40 text-white flex items-center justify-center hover:bg-pro-purple/20 hover:border-pro-purple-light/40 active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none group cursor-pointer z-20"
+                  aria-label="Previous newer video"
+                >
+                  <i class="fa-solid fa-arrow-left text-xs transform group-hover:-translate-x-0.5 transition-transform"></i>
+                </button>
+
+                <span class="text-[10px] font-display font-bold text-gray-400 tracking-widest uppercase select-none">
+                  Swipe or Browse
+                </span>
+
+                <button 
+                  @click="nextVideo" 
+                  :disabled="currentVideoIndex === videos.length - 1"
+                  class="w-10 h-10 rounded-xl border border-pro-mid-gray/40 bg-pro-dark-gray/40 text-white flex items-center justify-center hover:bg-pro-purple/20 hover:border-pro-purple-light/40 active:scale-95 transition-all disabled:opacity-30 disabled:pointer-events-none group cursor-pointer z-20"
+                  aria-label="Next older video"
+                >
+                  <i class="fa-solid fa-arrow-right text-xs transform group-hover:translate-x-0.5 transition-transform"></i>
+                </button>
+              </div>
             </div>
-          </div>
+
+            <!-- FALLBACK SKELETON WHILE HYDRATING -->
+            <template #fallback>
+              <div class="w-full aspect-[9/16] rounded-2xl bg-pro-black/40 border border-pro-mid-gray/20 flex flex-col items-center justify-center text-gray-500 text-xs gap-3">
+                <i class="fa-solid fa-circle-notch animate-spin text-xl text-pro-purple-light"></i>
+                Syncing Intel Stream...
+              </div>
+            </template>
+          </ClientOnly>
         </div>
 
+        <!-- RIGHT SIDE DETAILS -->
         <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 self-stretch h-full">
           
           <div class="premium-card rounded-3xl p-6 sm:p-8 border border-pro-mid-gray/40 flex flex-col justify-between group min-h-[270px] relative overflow-hidden bg-gradient-to-br from-pro-dark-gray via-pro-black to-pro-black">
@@ -166,60 +207,44 @@
 import { ref, computed, nextTick } from 'vue'
 import { useSwipe } from '@vueuse/core'
 
-// 1. DYNAMIC CONFIGURATION LAYER
-const config = useRuntimeConfig()
-const instagramAccessToken = config.public.instagramAccessToken
 const fallbackInstagramLink = 'https://www.instagram.com/fit2pro/'
 
-// 2. STATE LOGIC & DOM REFS
 const currentVideoIndex = ref(0)
 const videoPlayer = ref(null)
 const swipeTarget = ref(null)
 
-// 3. FETCH PIPELINE
-const { data: feedData, pending, error } = await useFetch(`https://graph.instagram.com/me/media`, {
-  query: {
-    fields: 'id,caption,media_type,media_url,permalink,thumbnail_url',
-    access_token: instagramAccessToken
-  },
-  server: false 
-})
+const { data: feedPayload, pending, error } = await useFetch('/api/instagram/feed')
 
-// 4. COMPUTED SOURCE PARSERS
-const videos = computed(() => {
-  if (!feedData.value?.data) return []
-  return feedData.value.data.filter(item => item.media_type === 'VIDEO')
-})
+const videos = computed(() => feedPayload.value?.videos || [])
 
-const videoStreamUrl = computed(() => {
+const activeVideo = computed(() => {
   if (videos.value.length === 0) return null
-  return videos.value[currentVideoIndex.value]?.media_url || null
+  return videos.value[currentVideoIndex.value] || null
 })
 
-const videoCaption = computed(() => {
-  if (videos.value.length === 0) return null
-  return videos.value[currentVideoIndex.value]?.caption || null
-})
+const videoCaption = computed(() => activeVideo.value?.caption || null)
+const videoPermalink = computed(() => activeVideo.value?.permalink || null)
 
-const videoPermalink = computed(() => {
-  if (videos.value.length === 0) return null
-  return videos.value[currentVideoIndex.value]?.permalink || null
-})
-
-// 5. AUTO-PLAY TRACKING UTILITY
 const handleVideoAutoplay = async () => {
   await nextTick()
-  if (videoPlayer.value) {
+  if (videoPlayer.value && activeVideo.value?.hasDirectMp4) {
     try {
+      videoPlayer.value.muted = true
       videoPlayer.value.load()
-      await videoPlayer.value.play()
+      const playPromise = videoPlayer.value.play()
+      if (playPromise !== undefined) {
+        playPromise.catch(err => {
+          if (err.name !== 'AbortError') {
+            console.warn("Autoplay execution handled:", err)
+          }
+        })
+      }
     } catch (err) {
-      console.warn("Autoplay execution blocked:", err)
+      console.warn("Autoplay error caught:", err)
     }
   }
 }
 
-// 6. NAVIGATION METHODS
 const nextVideo = () => {
   if (currentVideoIndex.value < videos.value.length - 1) {
     currentVideoIndex.value++
@@ -234,7 +259,6 @@ const prevVideo = () => {
   }
 }
 
-// 7. TOUCH GESTURE INTERCEPTION LAYER
 const { isSwiping, direction } = useSwipe(swipeTarget, {
   threshold: 40,
   onSwipeEnd: (e, direction) => {

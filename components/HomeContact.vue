@@ -33,35 +33,42 @@
             ✓ Thank you! Check your inbox.
           </p>
 
-          <!-- INTERACTIVE FORM STATE -->
+          <!-- INTERACTIVE FORM STATE (ClientOnly wraps interactive inputs to prevent hydration mismatches) -->
           <div v-if="!showSuccess" class="space-y-4">
-            <form @submit.prevent="handleEmailSubmission" class="mt-8 max-w-md mx-auto w-full flex flex-col sm:flex-row items-center gap-3 p-2 rounded-2xl bg-pro-black/40 border border-white/10 backdrop-blur-md">
-              
-              <!-- Input Field Group -->
-              <div class="relative w-full flex-grow">
-                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-purple-300 text-sm">
-                  <i class="fa-solid fa-at"></i>
+            <ClientOnly>
+              <form @submit.prevent="handleEmailSubmission" class="mt-8 max-w-md mx-auto w-full flex flex-col sm:flex-row items-center gap-3 p-2 rounded-2xl bg-pro-black/40 border border-white/10 backdrop-blur-md">
+                
+                <!-- Input Field Group -->
+                <div class="relative w-full flex-grow">
+                  <!-- ACCESSIBILITY: Screen reader-only label bound directly to blueprintEmail -->
+                  <label for="blueprintEmail" class="sr-only">Primary Email Address</label>
+                  
+                  <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-purple-300 text-sm">
+                    <i class="fa-solid fa-at"></i>
+                  </div>
+                  <input 
+                    id="blueprintEmail"
+                    name="email"
+                    v-model="email"
+                    type="email" 
+                    placeholder="Enter your primary email" 
+                    class="w-full bg-transparent pl-10 pr-4 py-3 text-sm font-sans text-white placeholder-purple-400 rounded-xl focus:outline-none focus:ring-1 focus:ring-pro-gold/50"
+                    required
+                    :disabled="isSubmitting"
+                  />
                 </div>
-                <input 
-                  v-model="email"
-                  type="email" 
-                  placeholder="Enter your primary email" 
-                  class="w-full bg-transparent pl-10 pr-4 py-3 text-sm font-sans text-white placeholder-purple-400 rounded-xl focus:outline-none focus:ring-1 focus:ring-pro-gold/50"
-                  required
-                  :disabled="isSubmitting"
-                />
-              </div>
 
-              <!-- Button Component -->
-              <button 
-                type="submit" 
-                :disabled="isSubmitting"
-                class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-pro-gold to-pro-gold-dark text-pro-black font-display font-black text-xs uppercase tracking-widest rounded-xl hover:scale-105 active:scale-95 transition-all duration-300 glow-gold cursor-pointer whitespace-nowrap disabled:opacity-40 flex items-center justify-center gap-2"
-              >
-                <i v-if="isSubmitting" class="fa-solid fa-circle-notch animate-spin"></i>
-                {{ isSubmitting ? 'Sending...' : 'Get Started' }}
-              </button>
-            </form>
+                <!-- Button Component -->
+                <button 
+                  type="submit" 
+                  :disabled="isSubmitting"
+                  class="w-full sm:w-auto px-6 py-3 bg-gradient-to-r from-pro-gold to-pro-gold-dark text-pro-black font-display font-black text-xs uppercase tracking-widest rounded-xl hover:scale-105 active:scale-95 transition-all duration-300 glow-gold cursor-pointer whitespace-nowrap disabled:opacity-40 flex items-center justify-center gap-2"
+                >
+                  <i v-if="isSubmitting" class="fa-solid fa-circle-notch animate-spin"></i>
+                  {{ isSubmitting ? 'Sending...' : 'Get Started' }}
+                </button>
+              </form>
+            </ClientOnly>
 
             <!-- Inline Error Messaging -->
             <div v-if="errorMessage" class="text-xs font-sans font-bold text-red-400 bg-red-950/40 border border-red-900/50 p-2.5 rounded-xl max-w-md mx-auto">
