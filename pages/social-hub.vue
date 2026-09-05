@@ -1,4 +1,5 @@
 <template>
+  <SocialHubHero />
   <div class="social-hub-container">
     <!-- Wrap third-party asynchronous feed components inside ClientOnly -->
     <ClientOnly>
